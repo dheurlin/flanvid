@@ -1,9 +1,24 @@
-{% if vids_list %}
-    <ul>
-        {% for vid in vids_list %}
-            <li>{{ vid.url }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No videos in queue. Go ahead, submit one!</p>
-{% endif %}
+<section>
+    <h1>Submitted Videos</h1>
+    {% if vids_list %}
+        <ul>
+            {% for vid in vids_list %}
+                <li>{{ vid.url }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No videos in queue. Go ahead, submit one!</p>
+    {% endif %}
+</section>
+
+<section>
+    <h1>Submit Video</h1>
+    <p>
+        Enter the url of a YouTube video to submit it.
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        {{ vid_form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</section>
