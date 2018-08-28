@@ -1,0 +1,9 @@
+{% if vids_list %}
+    <ul>
+        {% for vid in vids_list %}
+            <li>{{ vid.url }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No videos in queue. Go ahead, submit one!</p>
+{% endif %}
