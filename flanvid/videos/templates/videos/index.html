@@ -1,3 +1,6 @@
+{% load static %}
+
+
 <section>
     <h1>Submitted Videos</h1>
     {% if vids_list %}
@@ -26,3 +29,10 @@
         <button type="submit">Submit</button>
     </form>
 </section>
+
+<script>
+
+const ajaxUrl = {% url 'videos:vote' %}
+
+</script>
+<script src="{% static 'videos/vote.js' %}"></script>

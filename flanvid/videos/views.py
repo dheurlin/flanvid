@@ -17,3 +17,12 @@ def index(request):
         'vids_list' : vids_list,
         'vid_form'  : form,
     })
+
+def vote(request):
+
+    if request.method == 'POST':
+        content = request.POST
+    else:
+        content = "Empty..."
+
+    return HttpResponse('sdflj')
