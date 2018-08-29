@@ -19,10 +19,9 @@ def index(request):
     })
 
 def vote(request):
-
     if request.method == 'POST':
         content = request.POST
     else:
         content = "Empty..."
 
-    return HttpResponse('sdflj')
+    return "Hello, Ajax!"

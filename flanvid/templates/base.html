@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+
+<html lang="se">
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}FlanVid{% endblock title %}</title>
+
+</head>
+
+<body>
+
+    <main>
+        {% block content %} {% endblock content %}
+    </main>
+
+    {% block scripts %}
+        <script type="text/javascript" src="{% static 'django_ajax/js/jquery.ajax.min.js' %}"></script>
+    {% endblock scripts %}
+
+</body>
+
+</html>

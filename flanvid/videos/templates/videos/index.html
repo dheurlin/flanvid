@@ -1,6 +1,7 @@
+{% extends "base.html" %}
 {% load static %}
 
-
+{% block content %}
 <section>
     <h1>Submitted Videos</h1>
     {% if vids_list %}
@@ -30,9 +31,21 @@
     </form>
 </section>
 
-<script>
 
-const ajaxUrl = {% url 'videos:vote' %}
 
-</script>
-<script src="{% static 'videos/vote.js' %}"></script>
+{% endblock content %}
+
+
+{% block scripts %}
+    {{ block.super }}
+
+    <script>
+
+        const ajaxUrl = {% url 'videos:vote' %}
+
+    </script>
+
+    <script src="{% static 'videos/vote.js' %}"></script>
+
+{% endblock scripts %}
+
