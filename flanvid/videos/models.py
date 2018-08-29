@@ -1,14 +1,13 @@
 from django.db import models
-from .validators import validate_yt_url
+from .validators import validate_yt_id
 
-class YouTubeURL(models.CharField):
-    description = "A field for urls pointing to youtube videos"
+class YouTubeID(models.CharField):
+    description = "A field for youtube video ids"
 
     def __init__(self, *args, **kwargs):
-        kwargs['validators'] = [validate_yt_url]
+        kwargs['validators'] = [validate_yt_id]
         super().__init__(*args, **kwargs)
 
 
 class Video(models.Model):
-    url = YouTubeURL(max_length=200)
-    # vid_id = models.IntegerField()
+    vid_id = YouTubeID(max_length=200, unique=True)
