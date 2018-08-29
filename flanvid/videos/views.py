@@ -7,7 +7,6 @@ from .models import Video
 from .forms import VideoForm
 
 def index(request):
-    vids_list = Video.objects.all().order_by('-points')
 
     if request.method == 'POST':
         form = VideoForm(request.POST)
@@ -17,8 +16,13 @@ def index(request):
         form = VideoForm()
 
     return render(request, 'videos/index.html', {
-        'vids_list' : vids_list,
         'vid_form'  : form,
+    })
+
+def vidlist(request):
+    vids_list = Video.objects.all().order_by('-points')
+    return render(request, 'videos/vidlist.html', {
+        'vids_list' : vids_list,
     })
 
 @ajax

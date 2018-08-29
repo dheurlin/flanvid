@@ -1,0 +1,14 @@
+    <h1>Submitted Videos</h1>
+    {% if vids_list %}
+            {% for vid in vids_list %}
+                <li>
+                    <img src={{ vid.thumb_url }}>
+                    <span>{{ vid.title }}</span>
+                    <a href="#" class="vid-vote-btn" data-vote-type="up" data-for-vid={{ vid.id }}>⬆</a>
+                    <span>{{ vid.points }}</span>
+                    <a href="#" class="vid-vote-btn" data-vote-type="down" data-for-vid={{ vid.id }}>⬇</a>
+                </li>
+            {% endfor %}
+    {% else %}
+        <p>No videos in queue. Go ahead, submit one!</p>
+    {% endif %}
