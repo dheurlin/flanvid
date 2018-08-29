@@ -1,13 +1,26 @@
-(function test() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     console.log(this.responseText);
-    } else {
-        console.log(this);
-    }
-  };
-  xhttp.open("POST", ajaxUrl, true);
-  xhttp.send("vote=true&user=Sagge");
-})();
 
+function voteForVid(vidID, voteType) {
+    $.ajax({
+        url : ajaxUrl,
+        type : "POST",
+        data : {
+            id   : vidID,
+            type : voteType,
+            user : 'sagge',
+            csrfmiddlewaretoken : CSRF_TOKEN
+        },
+
+        success : function(json) {
+            console.log(json);
+        },
+
+        error : function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+}
+
+$("a.vid-vote-btn").click(function(e) {
+    e.preventDefault();
+    voteForVid($(this).attr("data-for-vid"),  $(this).attr("data-vote-type"));
+});

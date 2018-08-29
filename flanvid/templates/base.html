@@ -3,11 +3,13 @@
 
 <html lang="se">
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>{% block title %}FlanVid{% endblock title %}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <title>{% block title %}FlanVid{% endblock title %}</title>
 
 </head>
 
@@ -18,7 +20,6 @@
     </main>
 
     {% block scripts %}
-        <script type="text/javascript" src="{% static 'django_ajax/js/jquery.ajax.min.js' %}"></script>
     {% endblock scripts %}
 
 </body>
