@@ -11,3 +11,11 @@ def is_valid_id(yt_id):
     except:
         return False
 
+def get_vid_metadata(yt_id):
+    """Gets the video title and thumbnail url, and return them as a tuple"""
+
+    r = requests.get(f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={yt_id}&key={API_KEY}")
+
+    snippet = r.json()['items'][0]['snippet']
+    return (snippet['title'], snippet['thumbnails']['default']['url'])
+

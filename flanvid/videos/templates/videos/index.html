@@ -1,11 +1,15 @@
 <section>
     <h1>Submitted Videos</h1>
     {% if vids_list %}
-        <ul>
             {% for vid in vids_list %}
-                <li>{{ vid.vid_id }}</li>
+                <li>
+                    <img src={{ vid.thumb_url }}>
+                    <span>{{ vid.title }}</span>
+                    <a href="#">⬆</a>
+                    <span>{{ vid.points }}</span>
+                    <a href="#">⬇</a>
+                </li>
             {% endfor %}
-        </ul>
     {% else %}
         <p>No videos in queue. Go ahead, submit one!</p>
     {% endif %}
@@ -14,7 +18,7 @@
 <section>
     <h1>Submit Video</h1>
     <p>
-        Enter the url of a YouTube video to submit it.
+    Enter the video id (the part after <tt>watch?v=</tt> in the video's url) of a YouTube video to submit it.
     </p>
     <form method="post">
         {% csrf_token %}
