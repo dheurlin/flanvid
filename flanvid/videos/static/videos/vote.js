@@ -13,7 +13,6 @@ function voteForVid(vidID, voteType) {
         },
 
         success : function(json) {
-            console.log(json);
             getVidList();
         },
 
@@ -48,7 +47,6 @@ function bindVoteButtons() {
     $button.unbind("click");
 
     $button.click(function(e) {
-
         e.preventDefault();
         voteForVid($(this).attr("data-for-vid"),  $(this).attr("data-vote-type"));
     });

@@ -3,11 +3,17 @@ from django.db import transaction
 
 from django_ajax.decorators import ajax
 
-from .models import Video
+import json
+
+from .models import Video, VidVotes, VOTE_UP, VOTE_DOWN, vote_to_point
 from .forms import VideoForm
 
 def index(request):
+    # Make sure the visitor's session is initiated
+    if not 'voted_vids' in request.session:
+        request.session['voted_vids'] = VidVotes().to_json()
 
+    # Vaildate the submission form
     if request.method == 'POST':
         form = VideoForm(request.POST)
         if form.is_valid():
@@ -28,22 +34,34 @@ def vidlist(request):
 @ajax
 def vote(request):
     if request.method == 'POST':
-        vote_type = request.POST['type']
-        vid_id    = request.POST['id']
+        vote_type  = request.POST['type']
+        vid_id     = request.POST['id']
+        user_votes = VidVotes(json_data=request.session['voted_vids'])
 
         # Using transactions and select_for_update we prevent data races
         with transaction.atomic():
             video = Video.objects.filter(pk=vid_id).select_for_update()[0]
 
-            if vote_type == "up":
-                video.points += 1
-            if vote_type == "down":
-                video.points -= 1
+            # Adjust video vote according to whether the user has voted for the vid already
 
+            if not user_votes.has_voted_for(vid_id):
+                video.points += vote_to_point(vote_type)
+                user_votes.add_vote(vid_id, vote_type)
+            else:
+                # Toggle vote if same vote is cast again:
+                curr_vote = user_votes.get_vote_for(vid_id)
+                if vote_type == curr_vote:
+                    video.points -= vote_to_point(vote_type)
+                    user_votes.remove_vote(vid_id)
+                # otherwise, change the vote to the opposite
+                else:
+                    video.points += vote_to_point(vote_type) - vote_to_point(curr_vote)
+                    user_votes.change_vote(vid_id, VOTE_UP if curr_vote == VOTE_DOWN else VOTE_DOWN)
+
+            request.session['voted_vids'] = user_votes.to_json()
             video.save()
 
+            return
 
-
-        return f"{vote_type}voted {video.title}!"
     else:
         raise Http404()

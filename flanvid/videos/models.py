@@ -2,6 +2,8 @@ from django.db import models
 from .validators import validate_yt_id
 from .youtube import get_vid_metadata
 
+import json
+
 class YouTubeID(models.CharField):
     description = "A field for youtube video ids"
 
@@ -23,3 +25,42 @@ class Video(models.Model):
         self.thumb_url = thumb
 
         super().save(*args, **kwargs)  # Call the "real" save() method.
+
+
+VOTE_UP   = "up"
+VOTE_DOWN = "down"
+
+def vote_to_point(vote_type):
+    if vote_type == VOTE_UP:   return  1
+    if vote_type == VOTE_DOWN: return -1
+    else:                      return  0
+
+class VidVotes:
+    """A class representing the set of videos the user has voted for"""
+    def __init__(self, json_data=None):
+        if json == None:
+            self.vids = {}
+        else:
+            self.vids = json.loads(json_data)
+
+    def to_json(self):
+        return json.dumps(self.vids)
+
+    def add_vote(self, vid_id, vote_type):
+        if vid_id in  self.vids:
+            raise ValueError("Already voted!")
+        else:
+            self.vids[vid_id] = vote_type
+
+    def change_vote(self, vid_id, vote_type):
+        self.vids[vid_id] = vote_type
+
+    def remove_vote(self, vid_id):
+        del self.vids[vid_id]
+
+    def has_voted_for(self, vid_id):
+        return vid_id in self.vids
+
+    def get_vote_for(self, vid_id):
+        return self.vids[vid_id]
+
