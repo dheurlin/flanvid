@@ -16,6 +16,7 @@ class Video(models.Model):
     vid_id = YouTubeID(max_length=200, unique=True)
     title = models.CharField(max_length=500)
     thumb_url = models.CharField(max_length=500)
+    curr_playing = models.BooleanField(default=False)
 
     points = models.IntegerField(default=0)
 
@@ -23,6 +24,10 @@ class Video(models.Model):
         title, thumb = get_vid_metadata(self.vid_id)
         self.title = title
         self.thumb_url = thumb
+
+        # If no other videos are submitted, set this one to be currently playing
+        if Video.objects.count() == 0:
+            self.curr_playing = True
 
         super().save(*args, **kwargs)  # Call the "real" save() method.
 

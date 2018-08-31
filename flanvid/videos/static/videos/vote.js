@@ -8,7 +8,6 @@ function voteForVid(vidID, voteType) {
         data : {
             id   : vidID,
             type : voteType,
-            user : 'sagge',
             csrfmiddlewaretoken : CSRF_TOKEN
         },
 

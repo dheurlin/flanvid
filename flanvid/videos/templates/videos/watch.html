@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    {% if playing %}
+        <div id="player"></div>
+    {% else %}
+        <p>The queue is empty. Go ahead, submit a video!</p>
+
+
+        <script>
+            const REFRESH_TIMEOUT = 10000;
+            // If no video is playing, refresh every x seconds
+            // in case one is added
+            setInterval(function() {
+                location.reload()
+            }, REFRESH_TIMEOUT);
+        </script>
+
+    {% endif %}
+
+{% endblock content %}
+
+
+{% block scripts %}
+    {{ block.super }}
+
+    <script>
+        const CSRF_TOKEN   = '{{ csrf_token }}';
+        let current_id     = '{{ playing.0.id }}';
+        let current_vid_id = '{{ playing.0.vid_id }}';
+        const next_vid_url = {% url 'videos:next_video' %};
+    </script>
+
+    <script id="iframe-api"></script>
+
+    <script src="{% static 'videos/watch.js' %}"></script>
+
+{% endblock scripts %}
+

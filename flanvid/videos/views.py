@@ -26,9 +26,17 @@ def index(request):
     })
 
 def vidlist(request):
-    vids_list = Video.objects.all().order_by('-points')
+    vids_list    = Video.objects.filter(curr_playing=False).order_by('-points')
+    curr_playing = Video.objects.filter(curr_playing=True)
     return render(request, 'videos/vidlist.html', {
-        'vids_list' : vids_list,
+        'vids_list'    : vids_list,
+        'curr_playing' : curr_playing,
+    })
+
+def watch(request):
+    playing = Video.objects.filter(curr_playing=True)
+    return render(request, 'videos/watch.html', {
+        'playing' : playing,
     })
 
 @ajax
@@ -65,3 +73,39 @@ def vote(request):
 
     else:
         raise Http404()
+
+@ajax
+def next_video(request):
+    """
+    This view gets called asynchronously when a video has finished playing
+    and removes the currently playing video, as well as queing the next one
+    """
+    if request.method == 'POST':
+        vid_id = int(request.POST['id'])
+        curr_playing = Video.objects.filter(curr_playing=True)[0]
+
+        if (curr_playing == None) or (curr_playing.id != vid_id):
+            print(curr_playing == None)
+            print(curr_playing.id != vid_id)
+            raise ValueError(f"Trying to remove a video that is not currently playing, aborting.  Currently playing: {curr_playing.id}, trying to remove: {vid_id}")
+
+        with transaction.atomic():
+            # Find the highest voted video
+            vids = (Video.objects.all()
+                       .select_for_update()
+                       .filter(curr_playing=False)
+                       .order_by("-points"))
+
+            curr_playing.delete()
+
+            if vids.count() != 0:
+                vid = vids[0]
+                vid.curr_playing = True
+                vid.save()
+                return { 'has_new_vid' : True, 'new_id' : vid.id, 'new_vid_id' : vid.vid_id }
+
+            else:
+                return { 'has_new_vid' : False }
+
+
+

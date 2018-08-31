@@ -14,6 +14,14 @@
 </head>
 
 <body>
+    <header id="site-header">
+        <nav>
+            <ul>
+                <li><a href="{% url 'videos:index' %}">Submit and vote</a></li>
+                <li><a href="{% url 'videos:watch' %}">Watch (admin only)</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <main>
         {% block content %} {% endblock content %}

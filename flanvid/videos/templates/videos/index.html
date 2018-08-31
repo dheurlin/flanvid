@@ -3,9 +3,6 @@
 
 {% block content %}
 
-<section id=submitted_videos>
-
-</section>
 
 <section>
     <h1>Submit Video</h1>
@@ -20,6 +17,9 @@
 </section>
 
 
+<section id=submitted_videos>
+
+</section>
 
 {% endblock content %}
 
@@ -29,9 +29,9 @@
 
     <script>
 
-        const ajaxUrl    = {% url 'videos:vote' %}
-        const vidListUrl = {% url 'videos:vidlist' %}
-        const CSRF_TOKEN = '{{ csrf_token }}'
+        const ajaxUrl    = {% url 'videos:vote' %};
+        const vidListUrl = {% url 'videos:vidlist' %};
+        const CSRF_TOKEN = '{{ csrf_token }}';
 
     </script>
 

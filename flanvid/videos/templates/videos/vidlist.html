@@ -1,5 +1,14 @@
+    {% if curr_playing.0 %}
+        <h1>Currently playing</h1>
+        <div id=curr_playing>
+            <img src={{ curr_playing.0.thumb_url }}>
+            <span>{{ curr_playing.0.title }}</span>
+        </div>
+    {% endif  %}
+
     <h1>Submitted Videos</h1>
     {% if vids_list %}
+            <ul>
             {% for vid in vids_list %}
                 <li>
                     <img src={{ vid.thumb_url }}>
@@ -9,6 +18,7 @@
                     <a href="#" class="vid-vote-btn" data-vote-type="down" data-for-vid={{ vid.id }}>⬇</a>
                 </li>
             {% endfor %}
+            </ul>
     {% else %}
         <p>No videos in queue. Go ahead, submit one!</p>
     {% endif %}
