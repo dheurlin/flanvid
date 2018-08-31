@@ -43,7 +43,7 @@ def vote_to_point(vote_type):
 class VidVotes:
     """A class representing the set of videos the user has voted for"""
     def __init__(self, json_data=None):
-        if json == None:
+        if json_data == None:
             self.vids = {}
         else:
             self.vids = json.loads(json_data)

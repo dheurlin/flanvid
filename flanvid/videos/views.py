@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.db import transaction
 
 from django_ajax.decorators import ajax
+from django.contrib.admin.views.decorators import staff_member_required
 
 import json
 
@@ -33,6 +34,7 @@ def vidlist(request):
         'curr_playing' : curr_playing,
     })
 
+@staff_member_required
 def watch(request):
     playing = Video.objects.filter(curr_playing=True)
     return render(request, 'videos/watch.html', {
