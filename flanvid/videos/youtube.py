@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 
 API_KEY = 'AIzaSyAnqbHR1Ypww6jpFPEsT3QgdbPqQj2fKd0'
 
@@ -19,3 +20,11 @@ def get_vid_metadata(yt_id):
     snippet = r.json()['items'][0]['snippet']
     return (snippet['title'], snippet['thumbnails']['default']['url'])
 
+def url_to_id(yt_url):
+    """Converts a youtube URL to a Video ID"""
+    try:
+        match = re.search('\.[a-zA-Z]*\/(watch\?v=)?(.+)', yt_url)
+        return match.group(match.lastindex)
+
+    except:
+       raise ValueError("Invalid youtube url!")

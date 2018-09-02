@@ -1,6 +1,6 @@
 from django.db import models
-from .validators import validate_yt_id
-from .youtube import get_vid_metadata
+from .validators import validate_yt_id, validate_yt_url
+from .youtube import get_vid_metadata, url_to_id
 
 import json
 
@@ -11,9 +11,16 @@ class YouTubeID(models.CharField):
         kwargs['validators'] = [validate_yt_id]
         super().__init__(*args, **kwargs)
 
+class YouTubeURL(models.CharField):
+    description = "A field for youtube video urls"
+
+    def __init__(self, *args, **kwargs):
+        kwargs['validators'] = [validate_yt_url]
+        super().__init__(*args, **kwargs)
 
 class Video(models.Model):
     vid_id = YouTubeID(max_length=200, unique=True)
+    vid_url = YouTubeURL(max_length=200, unique=True)
     title = models.CharField(max_length=500)
     thumb_url = models.CharField(max_length=500)
     curr_playing = models.BooleanField(default=False)
@@ -21,6 +28,7 @@ class Video(models.Model):
     points = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
+        self.vid_id = url_to_id(self.vid_url)
         title, thumb = get_vid_metadata(self.vid_id)
         self.title = title
         self.thumb_url = thumb
