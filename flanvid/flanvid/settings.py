@@ -25,7 +25,7 @@ SECRET_KEY = 'it#midib9r94o8%q9bxm#2ixxz_g7=$r055d6&1)60w9vcm_)-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['flan1.dtek.se','flan2.dtek.se','flan3.dtek.se']
 
 
 # Application definition
@@ -78,7 +78,10 @@ WSGI_APPLICATION = 'flanvid.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'db',
         'NAME': 'flan',
+        'USER': 'flanuser',
+        'PASSWORD':  'flanpass'
     }
 }
 
@@ -120,6 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
 
 STATICFILES_DIRS = (
     # This tells django where to find global static files

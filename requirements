@@ -40,3 +40,4 @@ uritemplate==3.0.0
 urllib3==1.23
 wcwidth==0.1.7
 youtube-python==1.0.12
+uwsgi==2.0.17.1
